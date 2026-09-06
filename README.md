@@ -1,6 +1,6 @@
 # 🇮🇳 LokBandhu
 
-### Bridging Citizens and Government — One Click at a Time
+### Bridging Citizens and Government : One Click at a Time
 
 **LokBandhu** is a multilingual digital public-service platform designed to simplify communication between citizens and government services. The platform provides citizens with a centralized interface to submit and track complaints, discover categorized public services, interact with an AI-powered chatbot, and receive email notifications.
 
@@ -363,21 +363,6 @@ The project focuses on:
 
 ---
 
-## 👥 Team
-
-LokBandhu was developed as an MCA academic project at:
-
-**D Y Patil Deemed to be University**
-**School of Humanities and Sciences**
-Navi Mumbai
-
-### Project Contributors
-
-* Pratiksha Navle
-* Saniya Rajguru
-* Shreeya Parab
-
----
 
 ## 📚 Academic Project
 
