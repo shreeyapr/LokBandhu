@@ -1,0 +1,184 @@
+{% extends "layout.html" %}
+{% block navigation %}{% include "admin/admin_nav.html" %}{% endblock %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<style>
+.admin-welcome {
+    background: linear-gradient(135deg, #0A3D6B 0%, #0D5299 100%);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    color: #fff;
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+}
+.admin-welcome h2 { font-family:'Baloo 2',sans-serif; font-size:1.4rem; font-weight:800; margin:0 0 4px; }
+.admin-welcome p { margin:0; opacity:.8; font-size:13.5px; }
+.admin-welcome .shield { font-size:2.5rem; }
+</style>
+
+<!-- Welcome -->
+<div class="admin-welcome">
+    <div class="d-flex align-items-center gap-16" style="gap:16px;">
+        <div class="shield">🛡️</div>
+        <div>
+            <h2>Admin Control Panel</h2>
+            <p>Welcome back, <strong>{{ name }}</strong>. Full operational oversight below.</p>
+        </div>
+    </div>
+    <div style="font-size:12px;background:rgba(255,255,255,.1);padding:8px 16px;border-radius:8px;">
+        <i class="fas fa-clock me-1"></i> Last login: Today
+    </div>
+</div>
+
+<!-- KPIs -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-orange">
+            <div class="kpi-label mb-1">Pending</div>
+            <div class="kpi-val">{{ pending_complaints }}</div>
+            <div style="margin-top:10px;">
+                <a href="{{ url_for('admin.manage_complaints', status='Pending') }}"
+                   style="font-size:12px;color:rgba(255,255,255,.8);text-decoration:underline;">View Now →</a>
+            </div>
+            <div class="kpi-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-blue">
+            <div class="kpi-label mb-1">In Progress</div>
+            <div class="kpi-val">{{ in_progress_complaints }}</div>
+            <div style="margin-top:10px;">
+                <a href="{{ url_for('admin.manage_complaints', status='In Progress') }}"
+                   style="font-size:12px;color:rgba(255,255,255,.8);text-decoration:underline;">Track →</a>
+            </div>
+            <div class="kpi-icon"><i class="fas fa-spinner"></i></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-green">
+            <div class="kpi-label mb-1">Resolved</div>
+            <div class="kpi-val">{{ resolved_complaints }}</div>
+            <div style="margin-top:10px;">
+                <a href="{{ url_for('admin.manage_complaints', status='Resolved') }}"
+                   style="font-size:12px;color:rgba(255,255,255,.8);text-decoration:underline;">History →</a>
+            </div>
+            <div class="kpi-icon"><i class="fas fa-check-circle"></i></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-slate">
+            <div class="kpi-label mb-1">Total Complaints</div>
+            <div class="kpi-val">{{ total_complaints }}</div>
+            <div style="margin-top:10px;">
+                <a href="{{ url_for('admin.manage_complaints') }}"
+                   style="font-size:12px;color:rgba(255,255,255,.8);text-decoration:underline;">View All →</a>
+            </div>
+            <div class="kpi-icon"><i class="fas fa-box"></i></div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart + Quick Tools -->
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="lb-card">
+            <div class="lb-card-header blue"><i class="fas fa-chart-bar me-2"></i>Complaint Distribution</div>
+            <div class="p-4 text-center">
+                <canvas id="adminChart" style="max-height:260px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="lb-card">
+            <div class="lb-card-header saffron"><i class="fas fa-tools me-2"></i>Management Tools</div>
+            <div class="quick-links">
+                <a href="{{ url_for('admin.manage_complaints') }}" class="ql-item">
+                    <div class="ql-icon fi-saffron"><i class="fas fa-clipboard-list"></i></div>
+                    <div>
+                        <div style="font-weight:600;">Manage All Grievances</div>
+                        <div style="font-size:12px;color:var(--text-muted);">{{ total_complaints }} total complaints on platform</div>
+                    </div>
+                    <i class="fas fa-chevron-right ms-auto" style="color:var(--text-muted);font-size:12px;"></i>
+                </a>
+                <a href="{{ url_for('admin.manage_users') }}" class="ql-item">
+                    <div class="ql-icon fi-blue"><i class="fas fa-users-cog"></i></div>
+                    <div>
+                        <div style="font-weight:600;">User Account Management</div>
+                        <div style="font-size:12px;color:var(--text-muted);">{{ total_users }} registered citizens</div>
+                    </div>
+                    <i class="fas fa-chevron-right ms-auto" style="color:var(--text-muted);font-size:12px;"></i>
+                </a>
+                <a href="{{ url_for('admin.manage_services') }}" class="ql-item">
+                    <div class="ql-icon fi-green"><i class="fas fa-cogs"></i></div>
+                    <div>
+                        <div style="font-weight:600;">Service Directory</div>
+                        <div style="font-size:12px;color:var(--text-muted);">{{ total_services }} services listed</div>
+                    </div>
+                    <i class="fas fa-chevron-right ms-auto" style="color:var(--text-muted);font-size:12px;"></i>
+                </a>
+                <a href="#" class="ql-item" style="opacity:.5;pointer-events:none;">
+                    <div class="ql-icon fi-saffron"><i class="fas fa-chart-line"></i></div>
+                    <div>
+                        <div style="font-weight:600;">Platform Analytics</div>
+                        <div style="font-size:12px;color:var(--text-muted);">Coming soon</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const canvas = document.getElementById('adminChart');
+    
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pending', 'In Progress', 'Resolved'],
+                datasets: [{
+                    label: 'Complaints',
+                    // Added | default(0) to ensure the chart gets numbers even if data is missing
+                    data: [
+                        {{ pending_complaints | default(0) }}, 
+                        {{ in_progress_complaints | default(0) }}, 
+                        {{ resolved_complaints | default(0) }}
+                    ],
+                    backgroundColor: ['#FF6B00', '#1565A8', '#1A7A3C'],
+                    borderRadius: 6, 
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true, 
+                maintainAspectRatio: false,
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: 'rgba(0,0,0,.05)' } 
+                    }, 
+                    x: { 
+                        grid: { display: false } 
+                    } 
+                },
+                plugins: { 
+                    legend: { display: false }, 
+                    title: { 
+                        display: true, 
+                        text: 'Total Complaints by Status', 
+                        font: { family: "'Baloo 2'", size: 14 } 
+                    } 
+                }
+            }
+        });
+    } else {
+        console.error("Could not find element with ID 'adminChart'");
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,508 @@
+/* --- Color Palette for Indian Govt Theme --- */
+:root {
+    /* Primary Colors (Similar to Saffron, White, Green in the Flag) */
+    --primary-saffron: #FF9933; /* For highlights, buttons */
+    --primary-green: #138808; /* For primary navigation background, borders */
+    --primary-white: #FFFFFF;
+    
+    /* Background and Text Colors */
+    --bg-light: #F8F9FA; /* Off-white, slightly textured background */
+    --text-dark: #343A40;
+    
+    /* Font */
+    --font-primary: 'Noto Sans', sans-serif; /* Formal, clear, and good for readability */
+}
+
+/* Apply chosen font to body */
+body {
+    font-family: var(--font-primary);
+    background-color: var(--bg-light); /* Subtle off-white background */
+    color: var(--text-dark);
+    font-family: 'Noto Sans', 'Noto Sans Devanagari',
+                 'Noto Sans Bengali', 'Noto Sans Tamil',
+                 'Noto Sans Telugu', sans-serif;
+}
+
+/* --- Header Section Styles --- */
+
+/* Main Header (Ashoka Emblem and Title area) */
+.main-header {
+    background-color: var(--primary-white); /* White background for the header area */
+    border-bottom: 2px solid var(--primary-green); /* Green line underneath */
+}
+
+.emblem-logo {
+    /* Styles for your Ashoka Emblem image */
+    /* Ensure you have the image in static/images/ashoka_emblem_placeholder.png */
+}
+
+.site-title {
+    color: var(--text-dark);
+    font-weight: 700; /* Bold title */
+    text-transform: uppercase;
+}
+
+.site-tagline {
+    color: var(--text-dark) !important;
+}
+
+/* --- Navigation Bar Styles --- */
+
+.main-nav {
+    background-color: var(--primary-green); /* Green background for main navigation */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-nav .nav-link {
+    color: var(--primary-white) !important;
+    font-weight: 700;
+    padding: 0.5rem 1rem; /* Adjust padding */
+    border-bottom: 3px solid transparent; /* Prepare for hover/active state */
+    transition: all 0.3s ease;
+}
+
+.main-nav .nav-link:hover,
+.main-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: var(--primary-saffron); /* Saffron highlight for active/hover */
+    color: var(--primary-white) !important;
+}
+
+/* --- Footer Styles --- */
+
+.site-footer {
+    background-color: var(--text-dark); /* Dark/Charcoal for a professional footer */
+    color: var(--primary-white);
+    border-top: 3px solid var(--primary-saffron); /* Saffron line at the top of the footer */
+}
+
+.site-footer a {
+    color: var(--primary-saffron);
+}
+
+/* --- Bootstrap Overrides (Optional but Recommended) --- */
+/* Makes primary buttons match the saffron theme */
+.btn-primary, .bg-primary {
+    --bs-btn-bg: var(--primary-saffron);
+    --bs-btn-border-color: var(--primary-saffron);
+    --bs-btn-hover-bg: #E68A2E; /* Slightly darker saffron */
+    --bs-btn-hover-border-color: #E68A2E;
+    --bs-btn-active-bg: #CC7A27;
+    --bs-btn-active-border-color: #CC7A27;
+    --bs-navbar-brand-color: var(--text-dark); /* Ensure brand text is dark */
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--primary-saffron);
+    --bs-btn-border-color: var(--primary-saffron);
+    --bs-btn-hover-color: var(--primary-white);
+    --bs-btn-hover-bg: var(--primary-saffron);
+    --bs-btn-hover-border-color: var(--primary-saffron);
+}
+
+/* --- Index Page Components --- */
+
+/* Hero Section (Jumbotron) Styling */
+.hero-section {
+    /* Mix of Green and Saffron for a bold start */
+    background-color: var(--primary-green);
+    background-image: linear-gradient(135deg, var(--primary-green) 0%, #13a808 100%);
+    border-radius: 0 !important; /* Make it full width/square for a formal look */
+    border-bottom: 5px solid var(--primary-saffron); /* Strong Saffron border */
+    color: var(--primary-white) !important;
+}
+
+.hero-section .display-5 {
+    color: var(--primary-white);
+}
+
+.tagline-text {
+    font-weight: 400;
+}
+
+/* Custom button for outline-light in hero section */
+.btn-outline-light-theme {
+    color: var(--primary-white);
+    border-color: var(--primary-white);
+}
+.btn-outline-light-theme:hover {
+    color: var(--primary-green);
+    background-color: var(--primary-white);
+}
+
+/* Section Heading Style */
+.section-heading {
+    font-weight: 700;
+    color: var(--primary-green);
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+}
+.section-heading::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-saffron);
+    margin: 8px auto 0;
+}
+
+
+/* Feature Card Styling */
+.feature-card {
+    border: none; /* Remove default bootstrap border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Feature Card Colors based on theme */
+.feature-saffron {
+    border-top: 5px solid var(--primary-saffron);
+}
+.feature-saffron .card-title {
+    color: var(--primary-saffron);
+}
+
+.feature-green {
+    border-top: 5px solid var(--primary-green);
+}
+.feature-green .card-title {
+    color: var(--primary-green);
+}
+
+.feature-blue {
+    /* Using a secondary formal color, like the Chakra blue, for the third feature */
+    --secondary-blue: #000080; 
+    border-top: 5px solid var(--secondary-blue);
+}
+.feature-blue .card-title {
+    color: var(--secondary-blue);
+}
+
+/* Icon Styling (Requires Font Awesome CDN in layout.html head) */
+.feature-card i {
+    color: inherit; /* Inherits from card-title color */
+}
+
+/* Add Font Awesome CDN to your layout.html HEAD section */
+/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" /> */
+/* Custom Colors from Theme */
+/* --- New Color Variables (Confirming the change) --- */
+:root {
+    --primary-orange: #FF9933;   /* Saffron/Orange */
+    --primary-blue: #000080;     /* Deep Blue/Chakra */
+    --bg-orange-light: #FFF2E6;  /* Light Orange background */
+    --bg-blue-light: #E5E5F2;    /* Light Blue background */
+    /* ... other variables ... */
+}
+
+/* --- Submit Complaint Page Styles --- */
+
+/* Formal Header Border */
+.border-left-orange {
+    border-left: 5px solid var(--primary-orange) !important; 
+}
+
+/* Card Border uses Deep Blue for formality, Orange top border for accent */
+.card-border-top-orange {
+    border-top: 5px solid var(--primary-orange) !important;
+}
+.card.border-primary-blue {
+    border: 1px solid var(--primary-blue) !important;
+}
+
+.text-primary-blue {
+    color: var(--primary-blue) !important;
+}
+
+.bg-blue-light {
+    background-color: var(--bg-blue-light) !important;
+}
+
+/* Required field styling */
+.required-field::after {
+    content: " *";
+    color: var(--primary-orange); /* Using Saffron/Orange for required field indicator */
+    font-weight: bold;
+}
+
+/* --- Dashboard Specific Styles --- */
+
+.text-primary-green {
+    color: var(--primary-green) !important;
+}
+.text-saffron {
+    color: var(--primary-saffron) !important;
+}
+
+.bg-green-light {
+    background-color: var(--bg-green-light) !important;
+    border-bottom: 2px solid var(--primary-green);
+}
+.bg-saffron-light {
+    background-color: var(--bg-saffron-light) !important;
+    border-bottom: 2px solid var(--primary-saffron);
+}
+
+.dashboard-header {
+    border-left: 5px solid var(--primary-saffron); /* Saffron border highlight */
+}
+
+.section-heading-small {
+    font-weight: 700;
+    color: var(--primary-green);
+    border-bottom: 2px solid var(--bg-green-light);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* Feature Card (Chart Containers) Styles */
+.feature-green {
+    border: 1px solid var(--primary-green);
+}
+.feature-saffron {
+    border: 1px solid var(--primary-saffron);
+}
+
+/* Quick Action Links */
+.quick-link-saffron {
+    border-left: 5px solid var(--primary-saffron);
+    color: var(--text-dark);
+}
+.quick-link-green {
+    border-left: 5px solid var(--primary-green);
+    color: var(--text-dark);
+}
+.quick-link-blue {
+    border-left: 5px solid var(--primary-blue);
+    color: var(--text-dark);
+}
+
+.list-group-item-action:hover {
+    background-color: var(--bg-light); /* Off-white hover */
+}
+
+/* Status Badges Styling */
+.status-badge {
+    padding: 0.4em 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.status-resolved {
+    background-color: var(--primary-green) !important;
+    color: var(--primary-white) !important;
+}
+.status-progress {
+    background-color: var(--primary-saffron) !important;
+    color: var(--text-dark) !important;
+}
+.status-submitted {
+    background-color: var(--primary-blue) !important;
+    color: var(--primary-white) !important;
+}
+/* --- Service Directory Styles --- */
+
+/* Ensures the Deep Blue variable is available */
+.text-primary-blue {
+    color: var(--primary-blue) !important;
+}
+.bg-primary-blue {
+    background-color: var(--primary-blue) !important;
+}
+.text-primary-orange {
+    color: var(--primary-orange) !important;
+}
+
+/* Category Card Styling */
+.service-category-card {
+    border: 1px solid var(--bg-blue-light); /* Subtle blue border */
+}
+
+/* Individual Service Item */
+.service-item-link {
+    padding: 15px 20px;
+    border-left: 5px solid transparent; /* Prepare for hover */
+    transition: all 0.2s ease;
+}
+
+.service-item-link:hover {
+    background-color: var(--bg-orange-light); /* Light Orange hover background */
+    border-left-color: var(--primary-orange); /* Saffron/Orange highlight border */
+    cursor: pointer;
+}
+
+.service-item-link .btn-outline-primary {
+    /* Use the primary orange defined globally */
+    --bs-btn-border-color: var(--primary-orange);
+    --bs-btn-color: var(--primary-orange);
+}
+
+/* --- Global Theme Colors --- */
+:root {
+    --primary-orange: #FF9933;   /* Saffron/Orange */
+    --primary-blue: #000080;     /* Deep Blue/Chakra */
+    --text-dark: #343A40;
+    --bg-orange-light: #FFF2E6;  
+    --bg-blue-light: #E5E5F2;    
+}
+
+/* --- Tracking Page / Table Specific Styles --- */
+
+.bg-primary-blue {
+    background-color: var(--primary-blue) !important;
+}
+
+/* Custom styles for table rows */
+.table-hover > tbody > tr.clickable-row:hover {
+    background-color: var(--bg-orange-light); /* Light orange highlight on hover */
+    cursor: pointer;
+}
+
+/* Status Badges (Reconfirming theme usage) */
+.status-badge {
+    padding: 0.4em 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    min-width: 100px; /* Ensure badges are uniformly sized */
+    display: inline-block;
+}
+.status-resolved {
+    background-color: var(--primary-blue) !important; /* Resolved = Formal Blue */
+    color: var(--primary-white) !important;
+}
+.status-progress {
+    background-color: var(--primary-orange) !important; /* In Progress = Actionable Orange */
+    color: var(--text-dark) !important;
+}
+.status-submitted {
+    /* For pending/submitted status */
+    background-color: #AAAAAA !important; 
+    color: var(--primary-white) !important;
+}
+
+/* Header style from previous steps */
+.dashboard-header {
+    border-left: 5px solid var(--primary-orange); 
+}
+.border-left-orange {
+    border-left: 5px solid var(--primary-orange) !important; 
+}
+/* --- Color Palette --- */
+:root {
+    --primary-orange: #FF9933;   /* Saffron/Orange */
+    --primary-blue: #000080;     /* Deep Blue/Chakra */
+    --primary-white: #FFFFFF;
+    --text-dark: #343A40;
+    --bg-orange-light: #FFF2E6;  /* Light Orange background */
+    --bg-blue-light: #E5E5F2;    /* Light Blue background */
+    /* ... other variables ... */
+}
+
+/* --- Global Admin/Component Styles --- */
+.text-primary-blue {
+    color: var(--primary-blue) !important;
+}
+.bg-primary-blue {
+    background-color: var(--primary-blue) !important;
+}
+.border-left-orange {
+    border-left: 5px solid var(--primary-orange) !important; 
+}
+.card-border-top-orange {
+    border-top: 5px solid var(--primary-orange) !important;
+    border-left: 1px solid var(--primary-blue) !important; /* Ensure secondary border is blue */
+    border-right: 1px solid var(--primary-blue) !important;
+    border-bottom: 1px solid var(--primary-blue) !important;
+}
+
+/* --- Buttons/Actions --- */
+.btn-primary-blue {
+    background-color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+    color: var(--primary-white) !important;
+}
+.btn-primary-orange {
+    background-color: var(--primary-orange) !important;
+    border-color: var(--primary-orange) !important;
+    color: var(--primary-white) !important;
+}
+.btn-primary-orange:hover {
+    background-color: #E68A2E !important; 
+    border-color: #E68A2E !important;
+}
+.btn-outline-primary-orange {
+    color: var(--primary-orange) !important;
+    border-color: var(--primary-orange) !important;
+}
+.btn-outline-primary-blue {
+    color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+}
+.btn-lg-admin {
+    background-color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.5rem;
+}
+.btn-close-white { /* For modal headers */
+    filter: invert(1);
+}
+
+/* --- Dashboard/KPIs --- */
+.dashboard-kpi-card.bg-primary-orange {
+    background-color: var(--primary-orange) !important;
+    border-bottom: 5px solid var(--primary-blue);
+}
+.dashboard-kpi-card.bg-primary-blue {
+    background-color: var(--primary-blue) !important;
+    border-bottom: 5px solid var(--primary-orange);
+}
+.quick-link-blue {
+    border-left: 5px solid var(--primary-blue);
+    color: var(--text-dark);
+}
+.quick-link-orange {
+    border-left: 5px solid var(--primary-orange);
+    color: var(--text-dark);
+}
+
+/* --- User Management Badges --- */
+.role-badge {
+    padding: 0.4em 0.8em;
+    font-weight: 700;
+    min-width: 80px;
+    display: inline-block;
+}
+.role-admin-badge {
+    background-color: var(--primary-orange) !important;
+    color: var(--text-dark) !important;
+}
+.role-citizen-badge {
+    background-color: var(--primary-blue) !important;
+    color: var(--primary-white) !important;
+}
+
+/* --- Required Fields --- */
+.required-field::after {
+    content: " *";
+    color: var(--primary-orange);
+    font-weight: bold;
+}
+
+/* --- Complaint Management Badges --- */
+.status-submitted-admin {
+    background-color: var(--primary-orange) !important; 
+    color: var(--text-dark) !important;
+}
+.status-progress-admin {
+    background-color: var(--primary-blue) !important;
+    color: var(--primary-white) !important;
+}
+.status-resolved-admin {
+    background-color: var(--bs-success) !important;
+    color: var(--primary-white) !important;
+}

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LokBandhu — {% block title %}{% endblock %}</title>
+
+    <!-- Google Fonts: Baloo 2 (display) + Hind (body, Devanagari-friendly) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Hind:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Noto+Sans+Telugu:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* ═══════════════════════════════════════════
+           LOKBANDHU — DESIGN SYSTEM
+        ═══════════════════════════════════════════ */
+        :root {
+            --saffron:      #FF6B00;
+            --saffron-lt:   #FFF3E8;
+            --saffron-md:   #FFD4B0;
+            --india-blue:   #0A3D6B;
+            --india-blue-md:#1565A8;
+            --india-blue-lt:#E8F1FB;
+            --india-green:  #1A7A3C;
+            --india-green-lt:#E6F4EC;
+            --white:        #FFFFFF;
+            --off-white:    #F7F8FC;
+            --border:       #DDE3EE;
+            --text-dark:    #0D1B2A;
+            --text-muted:   #5A6882;
+            --shadow-sm:    0 2px 8px rgba(10,61,107,.08);
+            --shadow-md:    0 4px 20px rgba(10,61,107,.12);
+            --radius:       12px;
+            --radius-sm:    8px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'Hind', 'Noto Sans Devanagari', sans-serif;
+            background: var(--off-white);
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* ── Topbar ── */
+        .top-bar {
+            background: var(--india-blue);
+            color: rgba(255,255,255,.75);
+            font-size: 11.5px;
+            padding: 5px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar a { color: rgba(255,255,255,.75); text-decoration: none; }
+        .top-bar a:hover { color: #fff; }
+        .top-bar .sep { margin: 0 10px; opacity: .4; }
+
+        /* ── Tricolor Stripe ── */
+        .tricolor-stripe {
+            height: 4px;
+            background: linear-gradient(to right, #FF6B00 33.33%, #fff 33.33% 66.66%, #1A7A3C 66.66%);
+        }
+
+        /* ── Header ── */
+        .main-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        .emblem-wrap {
+            width: 52px; height: 52px;
+            background: var(--india-blue);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            font-size: 22px;
+        }
+        .site-title {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--india-blue);
+            margin: 0;
+            line-height: 1.1;
+            letter-spacing: -.5px;
+        }
+        .site-title span { color: var(--saffron); }
+        .site-tagline {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin: 0;
+            letter-spacing: .04em;
+        }
+        .header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+        /* ── Main Nav ── */
+        .main-nav {
+            background: var(--india-blue);
+            padding: 0 24px;
+        }
+        .main-nav .navbar-nav .nav-link {
+            color: rgba(255,255,255,.8);
+            font-family: 'Hind', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 14px 16px;
+            border-bottom: 3px solid transparent;
+            transition: color .2s, border-color .2s;
+        }
+        .main-nav .navbar-nav .nav-link:hover,
+        .main-nav .navbar-nav .nav-link.active {
+            color: #fff;
+            border-bottom-color: var(--saffron);
+        }
+        .main-nav .navbar-toggler { border-color: rgba(255,255,255,.3); }
+        .main-nav .navbar-toggler-icon { filter: invert(1); }
+
+        /* ── Buttons ── */
+        .btn-saffron {
+            background: var(--saffron);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: background .2s, transform .1s;
+        }
+        .btn-saffron:hover { background: #e05a00; color: #fff; transform: translateY(-1px); }
+        .btn-outline-blue {
+            border: 1.5px solid var(--india-blue);
+            color: var(--india-blue);
+            background: transparent;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+        }
+        .btn-outline-blue:hover { background: var(--india-blue); color: #fff; }
+
+        /* ── Cards ── */
+        .lb-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .lb-card-header {
+            padding: 14px 20px;
+            font-family: 'Baloo 2', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        .lb-card-header.blue { background: var(--india-blue); color: #fff; }
+        .lb-card-header.saffron { background: var(--saffron); color: #fff; }
+        .lb-card-header.green { background: var(--india-green); color: #fff; }
+
+        /* ── Page Header Band ── */
+        .page-header-band {
+            background: linear-gradient(135deg, var(--india-blue) 0%, var(--india-blue-md) 100%);
+            color: #fff;
+            padding: 28px 32px;
+            border-radius: var(--radius);
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header-band::after {
+            content: '';
+            position: absolute;
+            right: -30px; top: -30px;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,.05);
+            border-radius: 50%;
+        }
+        .page-header-band .ph-icon {
+            font-size: 2rem;
+            background: rgba(255,255,255,.15);
+            width: 56px; height: 56px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 12px;
+        }
+        .page-header-band h2 {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 0 4px;
+        }
+        .page-header-band p { margin: 0; opacity: .85; font-size: 14px; }
+
+        /* ── Badges / Status ── */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-submitted { background: #EEF2FF; color: #3730A3; }
+        .status-progress  { background: #FFF7ED; color: #C2410C; }
+        .status-resolved  { background: #F0FDF4; color: #15803D; }
+
+        /* ── Tables ── */
+        .lb-table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        .lb-table thead th {
+            background: var(--india-blue);
+            color: #fff;
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 13px 16px;
+            border: none;
+        }
+        .lb-table thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+        .lb-table thead th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
+        .lb-table tbody tr { transition: background .15s; }
+        .lb-table tbody tr:hover { background: var(--india-blue-lt); }
+        .lb-table tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13.5px;
+        }
+
+        /* ── KPI Cards ── */
+        .kpi-card {
+            border-radius: var(--radius);
+            padding: 22px 20px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-card .kpi-icon {
+            position: absolute;
+            right: 16px; bottom: 12px;
+            font-size: 3.5rem;
+            opacity: .15;
+        }
+        .kpi-card .kpi-val {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        .kpi-card .kpi-label { font-size: 12px; font-weight: 600; opacity: .85; letter-spacing: .05em; text-transform: uppercase; }
+        .kpi-orange { background: linear-gradient(135deg, #FF6B00, #FF9A3C); }
+        .kpi-blue   { background: linear-gradient(135deg, #0A3D6B, #1565A8); }
+        .kpi-green  { background: linear-gradient(135deg, #1A7A3C, #2EAA5A); }
+        .kpi-slate  { background: linear-gradient(135deg, #374151, #6B7280); }
+
+        /* ── Forms ── */
+        .lb-form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        .lb-input {
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-size: 14px;
+            font-family: 'Hind', sans-serif;
+            width: 100%;
+            background: #fff;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .lb-input:focus {
+            outline: none;
+            border-color: var(--india-blue-md);
+            box-shadow: 0 0 0 3px rgba(21,101,168,.12);
+        }
+        select.lb-input { cursor: pointer; }
+
+        /* ── Alerts / Flashes ── */
+        .lb-alert {
+            border-radius: var(--radius-sm);
+            padding: 12px 18px;
+            font-size: 14px;
+            border: none;
+            border-left: 4px solid;
+        }
+        .lb-alert.success { background: var(--india-green-lt); border-color: var(--india-green); color: #155724; }
+        .lb-alert.danger  { background: #FEF2F2; border-color: #EF4444; color: #991B1B; }
+        .lb-alert.info    { background: var(--india-blue-lt); border-color: var(--india-blue-md); color: var(--india-blue); }
+        .lb-alert.warning { background: var(--saffron-lt); border-color: var(--saffron); color: #92400E; }
+
+        /* ── Quick-link list ── */
+        .quick-links .ql-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            transition: background .15s;
+        }
+        .quick-links .ql-item:last-child { border-bottom: none; }
+        .quick-links .ql-item:hover { background: var(--india-blue-lt); color: var(--india-blue); }
+        .quick-links .ql-item .ql-icon {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            font-size: 15px;
+        }
+
+        /* ── Footer ── */
+        .site-footer {
+            background: var(--india-blue);
+            color: rgba(255,255,255,.7);
+            margin-top: 60px;
+            padding: 28px 24px;
+            font-size: 13px;
+        }
+        .site-footer a { color: rgba(255,255,255,.6); text-decoration: none; }
+        .site-footer a:hover { color: #fff; }
+        .site-footer .fw { color: rgba(255,255,255,.9); font-weight: 600; }
+
+        /* ── Main Content Wrapper ── */
+        #main-content { padding: 24px; min-height: 60vh; }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .main-header { padding: 12px 16px; }
+            #main-content { padding: 16px; }
+            .page-header-band { padding: 20px 18px; }
+            .kpi-card .kpi-val { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="top-bar">
+    <span>🇮🇳 Government of India — Digital Public Service Portal</span>
+    <span>
+        <a href="#main-content">Skip to Content</a>
+        <span class="sep">|</span>
+        <a href="#">Accessibility</a>
+        <span class="sep">|</span>
+        <a href="#">Help</a>
+    </span>
+</div>
+
+<!-- Tricolor stripe -->
+<div class="tricolor-stripe"></div>
+
+<!-- Header -->
+<header class="main-header">
+    <div class="emblem-wrap">🏛️</div>
+    <div>
+        <h1 class="site-title">Lok<span>Bandhu</span></h1>
+        <p class="site-tagline">{{ t.email_tagline }} · लोकबंधु</p>
+    </div>
+
+    <div class="header-actions">
+        <!-- Language Switcher -->
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                🌐
+                {% set lang_names = {'en': 'EN', 'hi': 'हि', 'mr': 'म', 'bn': 'বাং', 'ta': 'த', 'te': 'తె'} %}
+                {{ lang_names.get(session.get('lang', 'en'), 'EN') }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li><h6 class="dropdown-header" style="font-size:11px;">Select Language</h6></li>
+                <li><a class="dropdown-item {% if session.get('lang','en')=='en' %}fw-bold{% endif %}" href="{{ url_for('lang.set_language', lang='en') }}">🇬🇧 English</a></li>
+                <li><a class="dropdown-item {% if session.get('lang')=='hi' %}fw-bold{% endif %}"   href="{{ url_for('lang.set_language', lang='hi') }}">🇮🇳 हिंदी</a></li>
+                <li><a class="dropdown-item {% if session.get('lang')=='mr' %}fw-bold{% endif %}"   href="{{ url_for('lang.set_language', lang='mr') }}">🇮🇳 मराठी</a></li>
+                <li><a class="dropdown-item {% if session.get('lang')=='bn' %}fw-bold{% endif %}"   href="{{ url_for('lang.set_language', lang='bn') }}">🇮🇳 বাংলা</a></li>
+                <li><a class="dropdown-item {% if session.get('lang')=='ta' %}fw-bold{% endif %}"   href="{{ url_for('lang.set_language', lang='ta') }}">🇮🇳 தமிழ்</a></li>
+                <li><a class="dropdown-item {% if session.get('lang')=='te' %}fw-bold{% endif %}"   href="{{ url_for('lang.set_language', lang='te') }}">🇮🇳 తెలుగు</a></li>
+            </ul>
+        </div>
+
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.login') }}" class="btn btn-sm btn-outline-blue">{{ t.nav_login }}</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-sm btn-saffron">{{ t.nav_register }}</a>
+        {% else %}
+            <span class="text-muted small d-none d-md-inline">
+                👤 <strong>{{ t.welcome_user }}, {{ current_user.name }}</strong>
+            </span>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline-danger">{{ t.nav_logout }}</a>
+        {% endif %}
+    </div>
+</header>
+
+<!-- Global Nav (overridden by citizen/admin navs inside pages) -->
+{% block navigation %}
+<nav class="main-nav navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav">
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('index') }}">{{ t.nav_home }}</a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('about') }}">{{ t.nav_about }}</a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('services_landing') }}">{{ t.nav_services }}</a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('contact') }}">{{ t.nav_contact }}</a>
+    </li>
+</ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+<!-- Flash Messages -->
+<main id="main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="lb-alert {{ category }} mb-3 d-flex align-items-center gap-2" role="alert">
+                    {% if category == 'success' %}<i class="fas fa-check-circle"></i>
+                    {% elif category == 'danger'  %}<i class="fas fa-exclamation-circle"></i>
+                    {% else %}<i class="fas fa-info-circle"></i>{% endif %}
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="fw mb-1" style="font-family:'Baloo 2',sans-serif; font-size:1.1rem;">LokBandhu</div>
+                <div style="font-size:12px;">{{ t.footer_about }}</div>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="fw mb-1" style="font-size:13px;">{{ t.footer_quick_links }}</div>
+                <div><a href="#">{{ t.nav_about }}</a> · <a href="#">{{ t.nav_services }}</a> · <a href="#">{{ t.footer_track }}</a> · <a href="#">{{ footer_contact_us }}</a></div>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="fw mb-1" style="font-size:13px;">{{t.footer_email}}</div>
+                <div>{{t.footer_phone}}</div>
+            </div>
+        </div>
+        <hr style="border-color:rgba(255,255,255,.15); margin:16px 0 12px;">
+        <div class="text-center" style="font-size:12px;">© 2026 LokBandhu. {{ t['footer_rights'] }} | {{ t['footer_designed_by']}}</div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- ── Floating Toggle Button ── -->
+<button id="lok-toggle" aria-label="Open LokSeva AI Assistant" title="LokSeva — AI Assistant">
+  <span id="lok-icon-open">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </span>
+  <span id="lok-icon-close" style="display:none;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </span>
+  <span id="lok-badge" class="lok-badge"></span>
+</button>
+
+<!-- ── Chat Window ── -->
+<div id="lok-window" aria-label="LokSeva AI Chatbot" role="dialog" aria-modal="true">
+
+  <!-- Header -->
+  <div id="lok-header">
+    <div id="lok-tricolor"><span></span><span></span><span></span></div>
+    <div id="lok-header-body">
+      <div id="lok-avatar">🤖</div>
+      <div id="lok-info">
+        <div id="lok-name">
+          LokSeva
+          <span id="lok-online-dot"></span>
+          <span id="lok-lang-badge" title="Detected language">EN</span>
+        </div>
+        <div id="lok-subtitle">
+          <span id="lok-memory-label">AI Assistant</span>
+        </div>
+      </div>
+      <div id="lok-header-actions">
+        <button id="lok-clear-btn" title="Clear chat history">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+            <path d="M10 11v6"/><path d="M14 11v6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div id="lok-msgs" role="log" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- Typing indicator -->
+  <div id="lok-typing">
+    <div class="lok-bubble lok-bot-bubble">
+      <span class="lok-dot"></span><span class="lok-dot"></span><span class="lok-dot"></span>
+    </div>
+  </div>
+
+  <!-- Quick replies -->
+  <div id="lok-quick">
+    <button class="lok-qbtn" data-msg="Show my complaint status">📋 My Complaints</button>
+    <button class="lok-qbtn" data-msg="How to submit a complaint?">📝 Submit</button>
+    <button class="lok-qbtn" data-msg="What services are available?">🗂️ Services</button>
+    <button class="lok-qbtn" data-msg="Emergency helpline numbers">🚨 Emergency</button>
+  </div>
+
+  <!-- Input -->
+  <div id="lok-input-row">
+    <textarea id="lok-input"
+              placeholder="Ask me anything about LokBandhu..."
+              rows="1"
+              maxlength="600"
+              aria-label="Type your message"></textarea>
+    <button id="lok-send" title="Send (Enter)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div id="lok-footer-bar">
+    Powered by LokSeva AI · LokBandhu &nbsp;🇮🇳
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ STYLES -->
+<style>
+:root {
+  --lk-navy:    #000080;
+  --lk-navym:   #1a1aaa;
+  --lk-saffron: #FF9933;
+  --lk-green:   #138808;
+  --lk-bg:      #F0F4FB;
+  --lk-white:   #ffffff;
+  --lk-border:  #E2E8F0;
+  --lk-shadow:  0 10px 40px rgba(0,0,128,.18), 0 2px 8px rgba(0,0,0,.08);
+  --lk-font:    'Noto Sans','Noto Sans Devanagari','Noto Sans Bengali',
+                'Noto Sans Tamil','Noto Sans Telugu',system-ui,sans-serif;
+  --lk-r:       16px;
+  --lk-w:       360px;
+  --lk-h:       530px;
+}
+
+/* ── Toggle button ── */
+#lok-toggle {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  width: 58px; height: 58px; border-radius: 50%; border: none;
+  background: linear-gradient(135deg, var(--lk-navy), var(--lk-navym));
+  color: #fff; cursor: pointer; display: flex; align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,128,.45);
+  transition: transform .28s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+  position: fixed;
+}
+#lok-toggle:hover { transform: scale(1.12); box-shadow: 0 6px 28px rgba(0,0,128,.55); }
+.lok-badge {
+  position: absolute; top: 7px; right: 7px;
+  width: 11px; height: 11px; background: var(--lk-saffron);
+  border-radius: 50%; border: 2px solid #fff; display: none;
+}
+.lok-badge.show { display: block; }
+
+/* ── Window ── */
+#lok-window {
+  position: fixed; bottom: 100px; right: 28px; z-index: 9998;
+  width: var(--lk-w); height: var(--lk-h);
+  background: var(--lk-white); border-radius: var(--lk-r);
+  box-shadow: var(--lk-shadow); display: flex; flex-direction: column;
+  overflow: hidden; font-family: var(--lk-font);
+  border: 1px solid var(--lk-border);
+  opacity: 0; pointer-events: none;
+  transform: translateY(22px) scale(.95);
+  transform-origin: bottom right;
+  transition: opacity .26s ease, transform .26s cubic-bezier(.34,1.56,.64,1);
+}
+#lok-window.open { opacity: 1; pointer-events: all; transform: none; }
+
+/* ── Header ── */
+#lok-header { background: var(--lk-navy); flex-shrink: 0; }
+#lok-tricolor { display: flex; height: 4px; }
+#lok-tricolor span:nth-child(1) { flex:1; background: var(--lk-saffron); }
+#lok-tricolor span:nth-child(2) { flex:1; background: #ddd; }
+#lok-tricolor span:nth-child(3) { flex:1; background: var(--lk-green); }
+#lok-header-body {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 14px 13px;
+}
+#lok-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.14); border: 2px solid rgba(255,255,255,.28);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+#lok-info { flex: 1; min-width: 0; }
+#lok-name {
+  font-size: 14px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 6px;
+}
+#lok-online-dot {
+  width: 7px; height: 7px; background: #4ade80; border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(74,222,128,.3);
+}
+#lok-lang-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 7px;
+  background: var(--lk-saffron); color: #fff; border-radius: 10px;
+  letter-spacing: .04em; transition: background .3s;
+}
+#lok-subtitle { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 2px; }
+#lok-memory-label { font-size: 11px; }
+#lok-header-actions { margin-left: auto; }
+#lok-clear-btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.8); border-radius: 7px; padding: 5px 8px;
+  cursor: pointer; transition: all .2s; display: flex; align-items: center;
+}
+#lok-clear-btn:hover { background: rgba(239,68,68,.4); color: #fff; }
+
+/* ── Messages area ── */
+#lok-msgs {
+  flex: 1; overflow-y: auto; padding: 14px 13px 8px;
+  background: var(--lk-bg); display: flex; flex-direction: column;
+  gap: 10px; scroll-behavior: smooth;
+}
+#lok-msgs::-webkit-scrollbar { width: 4px; }
+#lok-msgs::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+.lok-row { display: flex; }
+.lok-row.lok-user { justify-content: flex-end; }
+.lok-row.lok-bot  { justify-content: flex-start; }
+
+.lok-bubble {
+  max-width: 83%; padding: 10px 13px;
+  font-size: 13.5px; line-height: 1.58; word-break: break-word;
+  border-radius: 14px;
+}
+.lok-bot-bubble {
+  background: var(--lk-white); color: #1e293b;
+  border: 1px solid var(--lk-border); border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.lok-user-bubble {
+  background: var(--lk-navy); color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* system / clarify messages */
+.lok-system-bubble {
+  background: #fff8e1; color: #78350f; border: 1px solid #fde68a;
+  border-radius: 10px; font-size: 13px; padding: 9px 13px;
+  max-width: 90%; align-self: center;
+}
+
+/* timestamp */
+.lok-ts {
+  font-size: 10px; color: #94a3b8; margin-top: 4px;
+  text-align: right;
+}
+.lok-bot .lok-ts { text-align: left; }
+
+/* ── Typing ── */
+#lok-typing {
+  padding: 0 13px 6px; background: var(--lk-bg); display: none;
+}
+#lok-typing .lok-bubble {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 10px 14px;
+}
+.lok-dot {
+  width: 6px; height: 6px; background: #94a3b8;
+  border-radius: 50%; animation: lokpulse 1.2s infinite ease-in-out;
+}
+.lok-dot:nth-child(2) { animation-delay: .2s; }
+.lok-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes lokpulse {
+  0%,80%,100% { transform: translateY(0); }
+  40%         { transform: translateY(-6px); }
+}
+
+/* ── Quick replies ── */
+#lok-quick {
+  padding: 8px 13px; background: var(--lk-bg);
+  display: flex; flex-wrap: wrap; gap: 6px;
+  border-top: 1px solid var(--lk-border); flex-shrink: 0;
+}
+.lok-qbtn {
+  font-size: 11.5px; font-family: var(--lk-font);
+  padding: 5px 11px; border-radius: 20px;
+  border: 1.5px solid var(--lk-navy);
+  background: transparent; color: var(--lk-navy);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.lok-qbtn:hover { background: var(--lk-navy); color: #fff; }
+
+/* ── Input ── */
+#lok-input-row {
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 10px 13px 12px; background: var(--lk-white);
+  border-top: 1px solid var(--lk-border); flex-shrink: 0;
+}
+#lok-input {
+  flex: 1; resize: none; border: 1.5px solid var(--lk-border);
+  border-radius: 10px; padding: 9px 12px; font-size: 13.5px;
+  font-family: var(--lk-font); color: #1e293b;
+  background: var(--lk-bg); outline: none; max-height: 100px;
+  line-height: 1.4; transition: border-color .2s;
+}
+#lok-input:focus { border-color: var(--lk-navy); background: var(--lk-white); }
+#lok-input::placeholder { color: #94a3b8; }
+#lok-send {
+  width: 38px; height: 38px; border-radius: 10px; border: none;
+  background: var(--lk-navy); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .15s;
+}
+#lok-send:hover  { background: var(--lk-navym); }
+#lok-send:active { transform: scale(.92); }
+#lok-send:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+/* ── Footer ── */
+#lok-footer-bar {
+  text-align: center; font-size: 10.5px; color: #94a3b8;
+  padding: 4px 0 8px; background: var(--lk-white); letter-spacing: .02em;
+}
+
+/* ── Language badge colors ── */
+[data-lang="hi"] #lok-lang-badge,
+[data-lang="mr"] #lok-lang-badge { background: #e65c00; }
+[data-lang="bn"] #lok-lang-badge { background: #1a7a4a; }
+[data-lang="ta"] #lok-lang-badge { background: #8b1a1a; }
+[data-lang="te"] #lok-lang-badge { background: #1a3a8b; }
+[data-lang="en"] #lok-lang-badge { background: var(--lk-saffron); }
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  #lok-window {
+    width: calc(100vw - 20px); right: 10px;
+    bottom: 88px; height: 72vh;
+  }
+  #lok-toggle { bottom: 18px; right: 14px; }
+}
+</style>
+
+<!-- ════════════════════════════════════════════════════════════ SCRIPT -->
+<script>
+(function () {
+  'use strict';
+
+  // ── DOM refs ────────────────────────────────────────────────────────────
+  const toggle    = document.getElementById('lok-toggle');
+  const win       = document.getElementById('lok-window');
+  const msgsEl    = document.getElementById('lok-msgs');
+  const inputEl   = document.getElementById('lok-input');
+  const sendBtn   = document.getElementById('lok-send');
+  const typingEl  = document.getElementById('lok-typing');
+  const badge     = document.getElementById('lok-badge');
+  const langBadge = document.getElementById('lok-lang-badge');
+  const memLabel  = document.getElementById('lok-memory-label');
+  const clearBtn  = document.getElementById('lok-clear-btn');
+  const qBtns     = document.querySelectorAll('.lok-qbtn');
+
+  // ── State ───────────────────────────────────────────────────────────────
+  let isOpen   = false;
+  let waiting  = false;
+  let msgCount = 0;
+  let currentLang = 'en';
+
+  // Language display map
+  const LANG_LABELS = {
+    en: 'EN', hi: 'हि', mr: 'म', bn: 'বাং', ta: 'த', te: 'తె'
+  };
+
+  // ── Init: restore history from server session ───────────────────────────
+  async function restoreHistory() {
+    try {
+      const res = await fetch('/chat/history');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.history && data.history.length > 0) {
+        data.history.forEach(t => {
+          appendMsg(t.role === 'user' ? 'user' : 'bot', t.text, false);
+        });
+        currentLang = data.last_lang || 'en';
+        updateLangBadge(currentLang);
+        updateMemoryLabel(data.total);
+        scrollBottom();
+      } else {
+        appendWelcome();
+      }
+    } catch (e) {
+      appendWelcome();
+    }
+  }
+
+  function appendWelcome() {
+    appendMsg('bot',
+      'Namaskar! 🙏 I\'m <strong>LokSeva</strong>, your LokBandhu AI assistant.\n\n' +
+      'I can help you with:\n' +
+      '📋 Your complaint status (live from DB)\n' +
+      '🗂️ Government services (Rural/Urban/Metro)\n' +
+      '📝 How to submit & track complaints\n' +
+      '🚨 Emergency helplines\n' +
+      '🌐 I auto-detect your language!\n\n' +
+      'What would you like to know?',
+      false
+    );
+  }
+
+  // ── Toggle open/close ───────────────────────────────────────────────────
+  toggle.addEventListener('click', () => {
+    isOpen = !isOpen;
+    win.classList.toggle('open', isOpen);
+    document.getElementById('lok-icon-open').style.display  = isOpen ? 'none' : 'inline';
+    document.getElementById('lok-icon-close').style.display = isOpen ? 'inline' : 'none';
+    badge.classList.remove('show');
+    if (isOpen) {
+      if (msgCount === 0) restoreHistory();
+      setTimeout(() => inputEl.focus(), 120);
+      scrollBottom();
+    }
+  });
+
+  // Pulse badge after 3s to attract attention
+  setTimeout(() => { if (!isOpen) badge.classList.add('show'); }, 3000);
+
+  // ── Quick reply buttons ─────────────────────────────────────────────────
+  qBtns.forEach(btn =>
+    btn.addEventListener('click', () => sendMessage(btn.dataset.msg))
+  );
+
+  // ── Send on Enter (Shift+Enter = newline) ───────────────────────────────
+  inputEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  sendBtn.addEventListener('click', () => sendMessage());
+
+  // Auto-resize textarea
+  inputEl.addEventListener('input', () => {
+    inputEl.style.height = 'auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 100) + 'px';
+  });
+
+  // ── Clear chat ──────────────────────────────────────────────────────────
+  clearBtn.addEventListener('click', async () => {
+    try {
+      await fetch('/chat/clear', { method: 'POST' });
+    } catch (e) {}
+    msgsEl.innerHTML = '';
+    msgCount = 0;
+    updateMemoryLabel(0);
+    appendWelcome();
+  });
+
+  // ── Core send ──────────────────────────────────────────────────────────
+  async function sendMessage(text) {
+    const msg = (text || inputEl.value).trim();
+    if (!msg || waiting) return;
+    if (!text) { inputEl.value = ''; inputEl.style.height = 'auto'; }
+
+    appendMsg('user', msg);
+    setWaiting(true);
+
+    try {
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        appendMsg('bot', '⚠️ Something went wrong. Please try again in a moment.');
+      } else {
+        appendMsg('bot', data.reply);
+
+        // Update language badge
+        if (data.lang) {
+          currentLang = data.lang;
+          updateLangBadge(data.lang);
+          win.dataset.lang = data.lang;
+        }
+
+        // Update memory indicator
+        if (data.context) {
+          const match = data.context.match(/(\d+)/);
+          if (match) updateMemoryLabel(parseInt(match[1]));
+        }
+
+        if (!isOpen) badge.classList.add('show');
+      }
+    } catch (e) {
+      appendMsg('bot', '⚠️ Could not connect to LokSeva. Please check your connection.');
+    }
+
+    setWaiting(false);
+  }
+
+  // ── Append message ──────────────────────────────────────────────────────
+  function appendMsg(role, text, animate = true) {
+    const row = document.createElement('div');
+    row.className = `lok-row lok-${role}`;
+    if (animate) row.style.animation = 'lokfadein .3s ease both';
+
+    const bubble = document.createElement('div');
+
+    // Detect if it's a clarify/system message
+    const isSystem = role === 'bot' && (
+      text.includes('Could you tell me') ||
+      text.includes('Are you asking about') ||
+      text.includes('could you rephrase')
+    );
+
+    bubble.className = isSystem
+      ? 'lok-system-bubble'
+      : (role === 'user' ? 'lok-bubble lok-user-bubble' : 'lok-bubble lok-bot-bubble');
+
+    // Render: support **bold**, line breaks, numbered lists
+    bubble.innerHTML = formatText(text);
+
+    const wrapper = document.createElement('div');
+    wrapper.style.display = 'flex';
+    wrapper.style.flexDirection = 'column';
+    wrapper.style.maxWidth = '85%';
+    wrapper.appendChild(bubble);
+
+    // Timestamp
+    const ts = document.createElement('div');
+    ts.className = 'lok-ts';
+    ts.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    wrapper.appendChild(ts);
+
+    row.appendChild(wrapper);
+    msgsEl.appendChild(row);
+    msgCount++;
+    scrollBottom();
+  }
+
+  // ── Text formatter ──────────────────────────────────────────────────────
+  function formatText(text) {
+    return esc(text)
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>')
+      .replace(/(1️⃣|2️⃣|3️⃣|4️⃣|5️⃣|6️⃣|7️⃣)/g, '<br>$1');
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── Update UI helpers ───────────────────────────────────────────────────
+  function updateLangBadge(lang) {
+    langBadge.textContent = LANG_LABELS[lang] || lang.toUpperCase();
+    langBadge.title = `Detected language: ${lang}`;
+  }
+
+  function updateMemoryLabel(count) {
+    if (count === 0) {
+      memLabel.textContent = 'AI Assistant';
+    } else {
+      memLabel.textContent = `Remembers ${count} message${count !== 1 ? 's' : ''}`;
+    }
+  }
+
+  function setWaiting(w) {
+    waiting = w;
+    sendBtn.disabled = w;
+    typingEl.style.display = w ? 'block' : 'none';
+    if (w) scrollBottom();
+  }
+
+  function scrollBottom() {
+    requestAnimationFrame(() => { msgsEl.scrollTop = msgsEl.scrollHeight; });
+  }
+
+  // ── Fade-in keyframe ────────────────────────────────────────────────────
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes lokfadein {
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(style);
+
+})();
+</script>
+<!-- ══════════════════════════════════════════════════════════ END WIDGET -->
+
+
+
+</body>
+</html>

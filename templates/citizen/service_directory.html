@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block navigation %}{% include "citizen/citizen_nav.html" %}{% endblock %}
+{% block title %}Service Directory{% endblock %}
+
+{% block content %}
+<style>
+.category-icon { font-size:1.6rem; width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.service-item {
+    display:flex; align-items:center; gap:16px;
+    padding:16px 20px; border-bottom:1px solid var(--border);
+    transition:background .15s;
+}
+.service-item:last-child { border-bottom:none; }
+.service-item:hover { background:var(--off-white); }
+.service-item .si-name { font-weight:600; font-size:14.5px; color:var(--text-dark); margin-bottom:3px; }
+.service-item .si-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+.cat-badge { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:4px; }
+.cat-rural { background:var(--india-green-lt); color:var(--india-green); }
+.cat-urban { background:var(--india-blue-lt); color:var(--india-blue); }
+.cat-metro { background:var(--saffron-lt); color:var(--saffron); }
+</style>
+
+<div class="page-header-band">
+    <div class="ph-icon">🗂️</div>
+    <h2>Government Service Directory</h2>
+    <p>Find services categorized by region — Rural, Urban, and Metro — available to all citizens.</p>
+</div>
+
+<!-- Search -->
+<div class="mb-4">
+    <form action="" method="GET">
+        <div style="display:flex;gap:10px;">
+            <div style="position:relative;flex:1;">
+                <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);"></i>
+                <input type="text" name="q" class="lb-input" style="padding-left:40px;"
+                       placeholder="Search for a service, category, or keyword…"
+                       value="{{ request.args.get('q', '') }}">
+            </div>
+            <button type="submit" class="btn btn-saffron px-4" style="border-radius:9px;font-weight:700;">Search</button>
+        </div>
+    </form>
+</div>
+
+<!-- Category Filter Pills -->
+<div class="d-flex gap-2 flex-wrap mb-4">
+    <span style="font-size:13px;color:var(--text-muted);font-weight:600;align-self:center;">Filter:</span>
+    <a href="{{ url_for('citizen.services') }}" class="cat-badge cat-urban" style="text-decoration:none;padding:6px 14px;">All</a>
+    <a href="?category=Rural" class="cat-badge cat-rural" style="text-decoration:none;padding:6px 14px;">🌾 Rural</a>
+    <a href="?category=Urban" class="cat-badge cat-urban" style="text-decoration:none;padding:6px 14px;">🏙️ Urban</a>
+    <a href="?category=Metro" class="cat-badge cat-metro" style="text-decoration:none;padding:6px 14px;">🌆 Metro</a>
+</div>
+
+{% for category, services in services_by_category.items() %}
+<div class="lb-card mb-4">
+    <div class="lb-card-header blue d-flex align-items-center gap-3">
+        <span>
+            {% if category == 'Rural' %}🌾
+            {% elif category == 'Urban' %}🏙️
+            {% else %}🌆{% endif %}
+        </span>
+        <span>{{ category }} Services</span>
+        <span style="margin-left:auto; background:rgba(255,255,255,.2); border-radius:20px; padding:2px 12px; font-size:12px; font-weight:600;">
+            {{ services|length }} service{{ 's' if services|length != 1 }}
+        </span>
+    </div>
+    {% for service in services %}
+    <div class="service-item">
+        <div class="category-icon
+            {% if category == 'Rural' %}fi-green
+            {% elif category == 'Urban' %}fi-blue
+            {% else %}fi-saffron{% endif %}">
+            {% if category == 'Rural' %}🌱
+            {% elif category == 'Urban' %}🚌
+            {% else %}🏥{% endif %}
+        </div>
+        <div style="flex:1;">
+            <div class="si-name">
+                {{ service.service_name }}
+                <span class="cat-badge cat-{{ category|lower }} ms-2">{{ category }}</span>
+            </div>
+            <div class="si-desc">{{ service.description }}</div>
+        </div>
+        <a href="#" class="btn btn-outline-secondary btn-sm" style="white-space:nowrap;">View Details</a>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+{% if not services_by_category %}
+<div class="lb-card p-5 text-center">
+    <div style="font-size:3rem;margin-bottom:12px;">📂</div>
+    <div style="font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:700;color:var(--india-blue);margin-bottom:8px;">No Services Available Yet</div>
+    <div style="color:var(--text-muted);font-size:14px;">The service directory is being populated. Please check back soon.</div>
+</div>
+{% endif %}
+{% endblock %}

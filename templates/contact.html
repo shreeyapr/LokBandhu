@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% block title %}Contact Us - LokBandhu{% endblock %}
+
+{% block content %}
+<style>
+.contact-container {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 45px rgba(10, 61, 107, 0.12);
+    overflow: hidden;
+    max-width: 960px;
+    margin: 40px auto;
+    display: flex;
+}
+
+.contact-info-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #0d345a, var(--india-blue));
+    color: #ffffff;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.contact-info-panel .deco-strip {
+    position: absolute; top: 0; left: 0; width: 6px; height: 100%; display: flex; flex-direction: column;
+}
+.contact-info-panel .deco-strip span { flex: 1; }
+
+.cip-meta h2 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.8rem; margin: 0 0 8px 0; }
+.cip-meta p { font-size: 14px; opacity: 0.85; margin: 0 0 32px 0; line-height: 1.5; }
+
+.channel-row { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+.channel-row i { color: var(--saffron); font-size: 18px; margin-top: 3px; }
+.channel-text .title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+.channel-text .val { font-size: 13.5px; opacity: 0.85; }
+
+.contact-form-panel {
+    flex: 1.2; padding: 48px; display: flex; flex-direction: column; justify-content: center;
+}
+.cfp-intro h3 { font-family: 'Baloo 2', sans-serif; font-weight: 700; color: var(--text-dark); margin: 0 0 4px 0; font-size: 1.4rem; }
+.cfp-intro p { font-size: 13.5px; color: var(--text-muted); margin: 0 0 24px 0; }
+
+.form-row-custom { margin-bottom: 16px; }
+.form-row-custom label { display: block; font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
+.form-row-custom input, .form-row-custom textarea {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 9px; padding: 10px 14px;
+    font-size: 14px; font-family: 'Hind', sans-serif; outline: none; transition: border-color .2s;
+}
+.form-row-custom input:focus, .form-row-custom textarea:focus { border-color: var(--india-blue-md); box-shadow: 0 0 0 3px rgba(21,101,168,.12); }
+</style>
+
+<div class="contact-container">
+    <div class="contact-info-panel">
+        <div class="deco-strip">
+            <span style="background:var(--saffron)"></span>
+            <span style="background:#fff"></span>
+            <span style="background:var(--india-green)"></span>
+        </div>
+        
+        <div class="cip-meta">
+            <h2>Support Desk</h2>
+            <p>Connect with our technical support teams or check physical regional nodal metrics directly.</p>
+            
+            <div class="channel-row">
+                <i class="fas fa-envelope"></i>
+                <div class="channel-text">
+                    <div class="title">Official Email</div>
+                    <div class="val">support@lokbandhu.gov.in</div>
+                </div>
+            </div>
+            
+            <div class="channel-row">
+                <i class="fas fa-phone-alt"></i>
+                <div class="channel-text">
+                    <div class="title">Helpline Number</div>
+                    <div class="val">+91 11 2345 6789 (10 AM - 5 PM)</div>
+                </div>
+            </div>
+            
+            <div class="channel-row">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="channel-text">
+                    <div class="title">Nodal Head Office</div>
+                    <div class="val">Digital Governance Cell, Secretariat Complex, Sector 4, New Delhi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-form-panel">
+        <div class="cfp-intro">
+            <h3>Send a Message</h3>
+            <p>Have non-grievance technical queries? Drop us a line below.</p>
+        </div>
+        
+        <form method="POST" action="">
+            <div class="form-row-custom">
+                <label for="c_name">Full Name</label>
+                <input type="text" id="c_name" name="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-row-custom">
+                <label for="c_email">Email Address</label>
+                <input type="email" id="c_email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-row-custom">
+                <label for="c_msg">Your Inquiry</label>
+                <textarea id="c_msg" name="message" rows="4" placeholder="How can our technical desk assist you?" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-saffron w-100" style="padding:12px; font-family:'Baloo 2', sans-serif; font-weight:700; border-radius:9px;">
+                <i class="fas fa-paper-plane me-2"></i> Send Inquiry
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

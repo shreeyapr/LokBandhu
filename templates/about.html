@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block title %}About Us - LokBandhu{% endblock %}
+
+{% block content %}
+<style>
+.about-hero {
+    background: linear-gradient(135deg, #0d345a, var(--india-blue));
+    color: #fff;
+    padding: 50px 40px;
+    border-radius: var(--radius);
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+.about-hero h1 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 2.2rem; margin-bottom: 12px; }
+.about-hero p { font-family: 'Hind', sans-serif; opacity: 0.9; max-width: 650px; margin: 0; line-height: 1.6; }
+
+.tricolor-bar {
+    height: 4px; display: flex; border-radius: 2px; overflow: hidden; margin-bottom: 24px;
+}
+.tricolor-bar span { flex: 1; }
+
+.vision-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    height: 100%;
+    box-shadow: var(--shadow-sm);
+}
+.vision-card h3 { font-family: 'Baloo 2', sans-serif; font-weight: 700; color: var(--india-blue); margin-bottom: 16px; }
+.vision-card p { font-size: 14.5px; color: var(--text-dark); line-height: 1.7; margin: 0; }
+
+/* Mini Project Attribution Section Styling */
+.project-credit-box {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1.5px dashed var(--border);
+}
+.credit-badge {
+    display: inline-block;
+    background: var(--india-blue-lt);
+    color: var(--india-blue);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.team-list {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-top: 8px;
+}
+.team-list strong {
+    color: var(--text-dark);
+}
+
+.timeline-box {
+    border-left: 3px solid var(--india-blue-md);
+    padding-left: 24px;
+    margin-left: 12px;
+}
+.timeline-item { position: relative; margin-bottom: 28px; }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-item::before {
+    content: ''; position: absolute; left: -31px; top: 4px;
+    width: 12px; height: 12px; border-radius: 50%; background: var(--saffron);
+}
+.timeline-year { font-family: 'Baloo 2', sans-serif; font-weight: 800; color: var(--saffron); font-size: 1.2rem; line-height: 1; margin-bottom: 4px; }
+.timeline-title { font-weight: 700; font-size: 15px; color: var(--text-dark); margin-bottom: 4px; }
+.timeline-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
+</style>
+
+<div class="about-hero">
+    <h1>About LokBandhu</h1>
+    <p>Bridging the gap between administration and citizens through transparent digital governance, real-time civic updates, and automated grievance workflows.</p>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="vision-card">
+            <h3>Our Core Mission</h3>
+            <div class="tricolor-bar">
+                <span style="background:var(--saffron)"></span>
+                <span style="background:#f0f0f0"></span>
+                <span style="background:var(--india-green)"></span>
+            </div>
+            <p>LokBandhu was built to decentralize public grievance monitoring and streamline civic updates across regional tiers. By providing clear portals tailored for Rural, Urban, and Metropolitan regions, we ensure every citizen, regardless of geography, has an equal voice in community development.</p>
+            
+            <div class="project-credit-box">
+                <span class="credit-badge"><i class="fas fa-university me-1"></i> Mini Project Genesis</span>
+                <p style="font-size: 13.5px; line-height: 1.6; margin-bottom: 8px;">
+                    The concept of LokBandhu was originally formulated and engineered as an academic Mini Project at <strong>DY Patil</strong>. 
+                </p>
+                <div class="team-list">
+                    <i class="fas fa-code-branch me-1" style="color: var(--saffron);"></i> Developed & Conceptualized by:<br>
+                    <strong>Shreeya Parab</strong>, <strong>Saniya Rajguru</strong>, and <strong>Pratiksha Navle</strong>.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="vision-card">
+            <h3>Our Modern Journey</h3>
+            <div class="timeline-box">
+                <div class="timeline-item">
+                    <div class="timeline-year">February 2026</div>
+                    <div class="timeline-title">Project Blueprint Launched</div>
+                    <div class="timeline-desc">Conceived as a centralized portal for unified regional monitoring.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">April 2026</div>
+                    <div class="timeline-title">Three-Tier Architecture Deployment</div>
+                    <div class="timeline-desc">Expanded service delivery frameworks into specific Rural, Urban, and Metro modules.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">May 2026</div>
+                    <div class="timeline-title">Next-Gen Digital Upgrades</div>
+                    <div class="timeline-desc">Implemented instant email notifications and secure reference tracking systems.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

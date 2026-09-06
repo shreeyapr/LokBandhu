@@ -1,0 +1,183 @@
+{% extends "layout.html" %}
+{% block navigation %}{% include "citizen/citizen_nav.html" %}{% endblock %}
+{% block title %}Citizen Dashboard{% endblock %}
+
+{% block content %}
+<style>
+.welcome-band {
+    background: linear-gradient(135deg, var(--india-green) 0%, #2EAA5A 100%);
+    border-radius: var(--radius);
+    padding: 22px 28px;
+    color: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap; gap: 12px;
+}
+.welcome-band h2 { font-family:'Baloo 2',sans-serif; font-size:1.5rem; font-weight:800; margin:0 0 4px; }
+.welcome-band p { margin:0; opacity:.85; font-size:14px; }
+.welcome-band .wb-actions { display:flex; gap:10px; flex-wrap:wrap; }
+.btn-white { background:#fff; color:var(--india-green); border:none; border-radius:8px; padding:9px 18px; font-weight:700; font-size:13.5px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:transform .15s; }
+.btn-white:hover { transform:translateY(-1px); color:var(--india-green); }
+.btn-ghost-white { background:rgba(255,255,255,.2); color:#fff; border:1.5px solid rgba(255,255,255,.4); border-radius:8px; padding:9px 18px; font-weight:600; font-size:13.5px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:background .15s; }
+.btn-ghost-white:hover { background:rgba(255,255,255,.3); color:#fff; }
+</style>
+
+<!-- Welcome -->
+<div class="welcome-band">
+    <div>
+        <h2>👋 Welcome back, {{ name }}!</h2>
+        <p>Here's your personalized public service dashboard.</p>
+    </div>
+    <div class="wb-actions">
+        <a href="{{ url_for('citizen.submit_complaint') }}" class="btn-white"><i class="fas fa-plus"></i> New Complaint</a>
+        <a href="{{ url_for('citizen.services') }}" class="btn-ghost-white"><i class="fas fa-list-alt"></i> Browse Services</a>
+    </div>
+</div>
+
+<!-- KPIs -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-blue">
+            <div class="kpi-label mb-1">Total Filed</div>
+            <div class="kpi-val">{{ total_complaints }}</div>
+            <div class="kpi-icon"><i class="fas fa-inbox"></i></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-orange">
+            <div class="kpi-label mb-1">Pending</div>
+            <div class="kpi-val">{{ total_complaints - resolved_count }}</div>
+            <div class="kpi-icon"><i class="fas fa-hourglass-half"></i></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-green">
+            <div class="kpi-label mb-1">Resolved</div>
+            <div class="kpi-val">{{ resolved_count }}</div>
+            <div class="kpi-icon"><i class="fas fa-check-circle"></i></div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kpi-card kpi-slate">
+            <div class="kpi-label mb-1">Success Rate</div>
+            <div class="kpi-val">{% if total_complaints > 0 %}{{ ((resolved_count / total_complaints) * 100)|int }}%{% else %}—{% endif %}</div>
+            <div class="kpi-icon"><i class="fas fa-chart-pie"></i></div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts + Quick Access -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-5">
+        <div class="lb-card h-100">
+            <div class="lb-card-header green"><i class="fas fa-chart-donut me-2"></i>Status Breakdown</div>
+            <div class="p-4 text-center">
+                <canvas id="statusChart" style="max-height:220px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="lb-card h-100">
+            <div class="lb-card-header" style="background:var(--saffron);color:#fff;">
+                <i class="fas fa-bolt me-2"></i>Quick Access
+            </div>
+            <div class="quick-links">
+                <a href="{{ url_for('citizen.submit_complaint') }}" class="ql-item">
+                    <div class="ql-icon fi-saffron"><i class="fas fa-plus-circle"></i></div>
+                    <div><div style="font-weight:600;">Submit New Complaint</div><div style="font-size:12px;color:var(--text-muted);">File a new grievance with the government</div></div>
+                    <i class="fas fa-chevron-right ms-auto" style="color:var(--text-muted);font-size:12px;"></i>
+                </a>
+                <a href="{{ url_for('citizen.track_complaints') }}" class="ql-item">
+                    <div class="ql-icon fi-blue"><i class="fas fa-search"></i></div>
+                    <div><div style="font-weight:600;">Track All My Complaints</div><div style="font-size:12px;color:var(--text-muted);">View status updates on all submissions</div></div>
+                    <i class="fas fa-chevron-right ms-auto" style="color:var(--text-muted);font-size:12px;"></i>
+                </a>
+                <a href="{{ url_for('citizen.services') }}" class="ql-item">
+                    <div class="ql-icon fi-green"><i class="fas fa-book-open"></i></div>
+                    <div><div style="font-weight:600;">Browse Service Directory</div><div style="font-size:12px;color:var(--text-muted);">Rural, Urban & Metro government services</div></div>
+                    <i class="fas fa-chevron-right ms-auto" style="color:var(--text-muted);font-size:12px;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Complaints Table -->
+<div class="lb-card">
+    <div class="lb-card-header blue d-flex align-items-center justify-content-between">
+        <span><i class="fas fa-history me-2"></i>Recent Complaints</span>
+        <a href="{{ url_for('citizen.track_complaints') }}" style="color:rgba(255,255,255,.75);font-size:13px;text-decoration:none;">View All →</a>
+    </div>
+    {% if recent_complaints %}
+    <div class="table-responsive">
+        <table class="lb-table">
+            <thead>
+                <tr>
+                    <th>Complaint ID</th>
+                    <th>Category</th>
+                    <th>Date Submitted</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in recent_complaints %}
+                <tr>
+                    <td><code style="font-size:12.5px;color:var(--india-blue);background:var(--india-blue-lt);padding:2px 8px;border-radius:4px;">{{ c.complaint_id }}</code></td>
+                    <td>{{ c.category }}</td>
+                    <td style="color:var(--text-muted);font-size:13px;">{{ c.date.strftime('%d %b %Y') }}</td>
+                    <td>
+                        <span class="status-pill
+                            {% if c.status == 'Resolved' %}status-resolved
+                            {% elif c.status == 'In Progress' %}status-progress
+                            {% else %}status-submitted{% endif %}">
+                            {% if c.status == 'Resolved' %}✅
+                            {% elif c.status == 'In Progress' %}🔵
+                            {% else %}🟡{% endif %}
+                            {{ c.status }}
+                        </span>
+                    </td>
+                    <td><a href="{{ url_for('citizen.track_complaints', id=c.complaint_id) }}" class="btn btn-outline-secondary btn-sm">View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="p-4 text-center" style="color:var(--text-muted);">
+        <i class="fas fa-inbox fa-2x mb-2" style="opacity:.4;"></i>
+        <p class="mb-2">No complaints submitted yet.</p>
+        <a href="{{ url_for('citizen.submit_complaint') }}" class="btn btn-saffron btn-sm">Submit Your First Complaint</a>
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script>
+const total = {{ total_complaints }};
+const resolved = {{ resolved_count }};
+const pending = total - resolved;
+const ctx = document.getElementById('statusChart');
+if(ctx){
+  new Chart(ctx, {
+    type:'doughnut',
+    data:{
+      labels:['Resolved','In Progress / Submitted'],
+      datasets:[{
+        data:[resolved, pending],
+        backgroundColor:['#1A7A3C','#FF6B00'],
+        borderWidth:0, hoverOffset:6
+      }]
+    },
+    options:{
+      responsive:true,
+      cutout:'68%',
+      plugins:{
+        legend:{ position:'bottom', labels:{ padding:16, font:{size:12} } },
+        title:{ display:false }
+      }
+    }
+  });
+}
+</script>
+{% endblock %}

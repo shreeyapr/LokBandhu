@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block navigation %}{% include "citizen/citizen_nav.html" %}{% endblock %}
+{% block title %}Track Complaint Status{% endblock %}
+
+{% block content %}
+<div class="page-header-band">
+    <div class="ph-icon">🔍</div>
+    <h2>Track Grievance Status</h2>
+    <p>View the real-time status and history of all your submitted complaints.</p>
+</div>
+
+<!-- Search -->
+<div class="mb-4">
+    <form action="" method="GET">
+        <div style="display:flex;gap:10px;">
+            <div style="position:relative;flex:1;">
+                <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);"></i>
+                <input type="text" name="search_id" class="lb-input" style="padding-left:40px;"
+                       placeholder="Search by Complaint ID or Category…"
+                       value="{{ request.args.get('search_id', '') }}">
+            </div>
+            <button type="submit" class="btn btn-saffron px-4" style="border-radius:9px;font-weight:700;">Search</button>
+        </div>
+    </form>
+</div>
+
+<!-- Status Legend -->
+<div class="d-flex gap-3 flex-wrap mb-4">
+    <span style="font-size:13px;color:var(--text-muted);font-weight:600;">Status legend:</span>
+    <span class="status-pill status-submitted">🟡 Submitted</span>
+    <span class="status-pill status-progress">🔵 In Progress</span>
+    <span class="status-pill status-resolved">✅ Resolved</span>
+</div>
+
+{% if complaints %}
+<div class="lb-card">
+    <div class="table-responsive">
+        <table class="lb-table">
+            <thead>
+                <tr>
+                    <th>Complaint ID</th>
+                    <th>Category</th>
+                    <th>Date Submitted</th>
+                    <th class="text-center">Status</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in complaints %}
+                <tr style="cursor:pointer;" onclick="this.classList.toggle('expanded')">
+                    <td>
+                        <code style="font-size:12.5px;color:var(--india-blue);background:var(--india-blue-lt);padding:3px 9px;border-radius:5px;">
+                            {{ c.complaint_id }}
+                        </code>
+                    </td>
+                    <td style="font-weight:500;">{{ c.category }}</td>
+                    <td style="color:var(--text-muted);font-size:13px;">{{ c.date.strftime('%d %b %Y') }}</td>
+                    <td class="text-center">
+                        <span class="status-pill
+                            {% if c.status == 'Resolved' %}status-resolved
+                            {% elif c.status == 'In Progress' %}status-progress
+                            {% else %}status-submitted{% endif %}">
+                            {% if c.status == 'Resolved' %}✅
+                            {% elif c.status == 'In Progress' %}🔵
+                            {% else %}🟡{% endif %}
+                            {{ c.status }}
+                        </span>
+                    </td>
+                    <td style="font-size:13px;color:var(--text-muted);">{{ c.description[:60] }}…</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="lb-card p-5 text-center">
+    <div style="font-size:3rem;margin-bottom:12px;">📭</div>
+    <div style="font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:700;color:var(--india-blue);margin-bottom:8px;">
+        No Complaints Found
+    </div>
+    <div style="color:var(--text-muted);font-size:14px;margin-bottom:20px;">
+        {% if request.args.get('search_id') %}
+            No complaints matched your search. Try a different ID or category.
+        {% else %}
+            You haven't submitted any complaints yet.
+        {% endif %}
+    </div>
+    <a href="{{ url_for('citizen.submit_complaint') }}" class="btn btn-saffron px-4" style="border-radius:9px;">
+        <i class="fas fa-plus me-2"></i> Submit Your First Complaint
+    </a>
+</div>
+{% endif %}
+{% endblock %}

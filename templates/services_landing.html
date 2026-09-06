@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+{% block title %}Our Services - LokBandhu{% endblock %}
+
+{% block content %}
+<style>
+.services-header {
+    text-align: center; margin-bottom: 44px;
+}
+.services-header h1 { font-family: 'Baloo 2', sans-serif; font-weight: 800; color: var(--india-blue); font-size: 2.2rem; }
+.services-header p { color: var(--text-muted); font-size: 15px; max-width: 600px; margin: 8px auto 0; }
+
+.tier-wrapper-card {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+}
+.tier-wrapper-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.twc-banner {
+    padding: 24px; color: #fff; text-align: center;
+}
+.twc-banner.rural { background: linear-gradient(135deg, #1e5a34, var(--india-green)); }
+.twc-banner.urban { background: linear-gradient(135deg, #0f3d67, var(--india-blue)); }
+.twc-banner.metro { background: linear-gradient(135deg, #c75002, var(--saffron)); }
+
+.twc-banner .emoji { font-size: 2.2rem; margin-bottom: 8px; display: block; }
+.twc-banner h3 { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 1.3rem; margin: 0; }
+
+.twc-body { padding: 24px; display: flex; flex-direction: column; justify-content: space-between; height: calc(100% - 130px); }
+.twc-list { list-style: none; padding: 0; margin: 0 0 24px 0; }
+.twc-list li { font-size: 14px; color: var(--text-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.twc-list li i { font-size: 12px; }
+.twc-list.rural li i { color: var(--india-green); }
+.twc-list.urban li i { color: var(--india-blue); }
+.twc-list.metro li i { color: var(--saffron); }
+
+.btn-tier {
+    display: block; text-align: center; padding: 10px; border-radius: 8px;
+    font-family: 'Baloo 2', sans-serif; font-weight: 700; text-decoration: none; font-size: 14.5px;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-tier.rural { border: 1.5px solid var(--india-green); color: var(--india-green); }
+.btn-tier.rural:hover { background: var(--india-green); color: #fff; }
+.btn-tier.urban { border: 1.5px solid var(--india-blue); color: var(--india-blue); }
+.btn-tier.urban:hover { background: var(--india-blue); color: #fff; }
+.btn-tier.metro { border: 1.5px solid var(--saffron); color: var(--saffron); }
+.btn-tier.metro:hover { background: var(--saffron); color: #fff; }
+</style>
+
+<div class="services-header">
+    <h1>Regional Service Hub</h1>
+    <p>Select your operational administrative category to view and request structured municipal or panchayat utilities.</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="tier-wrapper-card">
+            <div class="twc-banner rural">
+                <span class="emoji">🌾</span>
+                <h3>Rural Directory</h3>
+            </div>
+            <div class="twc-body">
+                <ul class="twc-list rural">
+                    <li><i class="fas fa-check"></i> Subsidized Seed Distribution</li>
+                    <li><i class="fas fa-check"></i> Borewell & Irrigation Approvals</li>
+                    <li><i class="fas fa-check"></i> Gram Panchayat Title Logs</li>
+                </ul>
+                <a href="{{ url_for('citizen.services', category='Rural') }}" class="btn-tier rural">Access Rural Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="tier-wrapper-card">
+            <div class="twc-banner urban">
+                <span class="emoji">🏙️</span>
+                <h3>Urban Directory</h3>
+            </div>
+            <div class="twc-body">
+                <ul class="twc-list urban">
+                    <li><i class="fas fa-check"></i> Property Tax Estimator</li>
+                    <li><i class="fas fa-check"></i> Municipal Transit Passes</li>
+                    <li><i class="fas fa-check"></i> Water Pipeline Utility Access</li>
+                </ul>
+                <a href="{{ url_for('citizen.services', category='Urban') }}" class="btn-tier urban">Access Urban Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="tier-wrapper-card">
+            <div class="twc-banner metro">
+                <span class="emoji">🌆</span>
+                <h3>Metro Directory</h3>
+            </div>
+            <div class="twc-body">
+                <ul class="twc-list metro">
+                    <li><i class="fas fa-check"></i> High-Rise Building NOCs</li>
+                    <li><i class="fas fa-check"></i> Real-time AQI Tracking Maps</li>
+                    <li><i class="fas fa-check"></i> EV Charging Line Deployments</li>
+                </ul>
+                <a href="{{ url_for('citizen.services', category='Metro') }}" class="btn-tier metro">Access Metro Portal</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

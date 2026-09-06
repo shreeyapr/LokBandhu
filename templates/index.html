@@ -1,0 +1,269 @@
+{% extends "layout.html" %}
+{% block title %}Welcome to LokBandhu{% endblock %}
+
+{% block content %}
+<style>
+/* ── Hero ── */
+.hero {
+    background: linear-gradient(135deg, var(--india-blue) 0%, #1565A8 60%, #1A7A3C 100%);
+    border-radius: var(--radius);
+    padding: 60px 48px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+.hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 12.5px; font-weight: 600; letter-spacing: .04em;
+    margin-bottom: 20px; text-transform: uppercase;
+}
+.hero h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+}
+.hero h1 span { color: #FFD4A0; }
+.hero p {
+    font-size: 1.05rem; max-width: 580px;
+    line-height: 1.7; opacity: .9;
+    margin-bottom: 28px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-actions .btn-hero-primary {
+    background: var(--saffron);
+    color: #fff; font-weight: 700;
+    padding: 13px 28px; border-radius: 10px;
+    text-decoration: none; font-size: 15px;
+    border: none; transition: background .2s, transform .15s;
+    display: inline-flex; align-items: center; gap: 8px;
+}
+.hero-actions .btn-hero-primary:hover { background: #e05a00; transform: translateY(-2px); }
+.hero-actions .btn-hero-ghost {
+    background: rgba(255,255,255,.15);
+    color: #fff; font-weight: 600;
+    padding: 13px 28px; border-radius: 10px;
+    text-decoration: none; font-size: 15px;
+    border: 1.5px solid rgba(255,255,255,.4);
+    transition: background .2s;
+    display: inline-flex; align-items: center; gap: 8px;
+}
+.hero-actions .btn-hero-ghost:hover { background: rgba(255,255,255,.25); color: #fff; }
+.hero::before {
+    pointer-events: none;
+}
+
+.hero-actions {
+    position: relative;
+    z-index: 2;
+}
+.hero-stat {
+    text-align: center; padding: 10px 20px;
+    border-right: 1px solid rgba(255,255,255,.2);
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat .val {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    line-height: 1;
+}
+.hero-stat .lbl { font-size: 11px; opacity: .7; letter-spacing: .04em; text-transform: uppercase; }
+
+/* ── Features ── */
+.feature-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    height: 100%;
+    transition: transform .2s, box-shadow .2s;
+    position: relative;
+    overflow: hidden;
+}
+.feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+}
+.feature-card.fc-saffron::before { background: var(--saffron); }
+.feature-card.fc-blue::before   { background: var(--india-blue); }
+.feature-card.fc-green::before  { background: var(--india-green); }
+.feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.feature-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 16px;
+}
+.fi-saffron { background: var(--saffron-lt); color: var(--saffron); }
+.fi-blue    { background: var(--india-blue-lt); color: var(--india-blue); }
+.fi-green   { background: var(--india-green-lt); color: var(--india-green); }
+.feature-card h3 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 10px;
+    color: var(--text-dark);
+}
+.feature-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+/* ── How it works ── */
+.how-step {
+    display: flex; gap: 18px; align-items: flex-start;
+    margin-bottom: 24px;
+}
+.step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--india-blue); color: #fff;
+    font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+}
+.step-content h5 { font-family:'Baloo 2',sans-serif; font-weight:700; margin:0 0 4px; font-size:15px; }
+.step-content p  { font-size:13.5px; color:var(--text-muted); margin:0; }
+
+/* ── Section title ── */
+.section-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.6rem; font-weight: 800;
+    color: var(--india-blue);
+    margin-bottom: 6px;
+}
+.section-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+</style>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="hero-badge">{{ t['hero_badge'] }}</div>
+    <h1>{{ t['hero_title_part1'] }}<br><span>{{ t['hero_title_span'] }}</span></h1>
+    <p>{{ t['hero_description'] }}</p>
+    <div class="hero-actions">
+        <a href="{{ url_for('auth.register') }}" class="btn-hero-primary">
+            <i class="fas fa-user-plus"></i> {{ t.nav_register_as }}
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="btn-hero-ghost">
+            <i class="fas fa-sign-in-alt"></i> {{ t.nav_login_as }}
+        </a>
+    </div>
+
+    <div class="d-flex flex-wrap mt-4 pt-2" style="border-top:1px solid rgba(255,255,255,.2);">
+        <div class="hero-stat"><div class="val">3</div><div class="lbl">{{ t.service_tiers}}</div></div>
+        <div class="hero-stat"><div class="val">8+</div><div class="lbl">{{ t.issue_categories}}</div></div>
+        <div class="hero-stat"><div class="val">24/7</div><div class="lbl">{{ t.ai_support}}</div></div>
+        <div class="hero-stat"><div class="val">Free</div><div class="lbl">{{ t.for_all_citizens}}</div></div>
+    </div>
+</div>
+
+<!-- Features -->
+<div class="mb-5">
+    <div class="text-center mb-4">
+        <div class="section-title">{{ t['feat_section_title'] }}</div>
+        <div class="section-sub">{{ t['feat_section_sub'] }}</div>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="feature-card fc-saffron">
+                <div class="feature-icon fi-saffron"><i class="fas fa-file-alt"></i></div>
+                <h3>{{ t['feat_complaint_title'] }}</h3>
+                <p>{{ t['feat_complaint_desc'] | safe }}</p>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="feature-card fc-blue">
+                <div class="feature-icon fi-blue"><i class="fas fa-map-marked-alt"></i></div>
+                <h3>{{ t['feat_directory_title'] }}</h3>
+                <p>{{ t['feat_directory_desc'] | safe }}</p>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="feature-card fc-green">
+                <div class="feature-icon fi-green"><i class="fas fa-robot"></i></div>
+                <h3>{{ t['feat_ai_title'] }}</h3>
+                <p>{{ t['feat_ai_desc'] }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How it works + CTA -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="lb-card h-100">
+            <div class="lb-card-header blue">
+                <i class="fas fa-list-ol me-2"></i> {{ t['hiw_header'] }}
+            </div>
+            <div class="p-4">
+                <div class="how-step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h5>{{ t['hiw_step1_title'] }}</h5>
+                        <p>{{ t['hiw_step1_desc'] }}</p>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h5>{{ t['hiw_step2_title'] }}</h5>
+                        <p>{{ t['hiw_step2_desc'] }}</p>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h5>{{ t['hiw_step3_title'] }}</h5>
+                        <p>{{ t['hiw_step3_desc'] }}</p>
+                    </div>
+                </div>
+                <div class="how-step" style="margin-bottom:0;">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h5>{{ t['hiw_step4_title'] }}</h5>
+                        <p>{{ t['hiw_step4_desc'] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="lb-card h-100" style="background: linear-gradient(135deg, var(--saffron-lt), var(--india-blue-lt));">
+            <div class="lb-card-header saffron">
+                <i class="fas fa-hands-helping me-2"></i>{{ t['tier_header'] }}
+            </div>
+            <div class="p-4">
+                <div class="mb-3 d-flex gap-3 align-items-start">
+                    <span style="font-size:1.8rem;">🌾</span>
+                    <div>
+                        <div style="font-weight:700; font-size:15px; color:var(--india-blue);">{{ t['tier_rural_title'] }}</div>
+                        <div style="font-size:13.5px; color:var(--text-muted);">{{ t['tier_rural_list'] }}</div>
+                    </div>
+                </div>
+                <div class="mb-3 d-flex gap-3 align-items-start">
+                    <span style="font-size:1.8rem;">🏙️</span>
+                    <div>
+                        <div style="font-weight:700; font-size:15px; color:var(--india-blue);">{{ t['tier_urban_title'] }}</div>
+                        <div style="font-size:13.5px; color:var(--text-muted);">{{ t['tier_urban_list'] }}</div>
+                    </div>
+                </div>
+                <div class="mb-4 d-flex gap-3 align-items-start">
+                    <span style="font-size:1.8rem;">🌆</span>
+                    <div>
+                        <div style="font-weight:700; font-size:15px; color:var(--india-blue);">{{ t['tier_metro_title'] }}</div>
+                        <div style="font-size:13.5px; color:var(--text-muted);">{{ t['tier_metro_list'] }}</div>
+                    </div>
+                </div>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-saffron w-100" style="padding:12px;">
+                    <i class="fas fa-user-plus me-2"></i> {{ t['tier_cta_btn'] }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

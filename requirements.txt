@@ -1,0 +1,8 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Werkzeug
+nltk
+numpy
+scikit-learn
+langdetect

@@ -1,0 +1,254 @@
+{% extends "layout.html" %}
+{% block navigation %}{% include "citizen/citizen_nav.html" %}{% endblock %}
+{% block title %}Submit Complaint{% endblock %}
+
+{% block content %}
+<style>
+.split-complaint-container {
+    display: flex;
+    min-height: calc(85vh - 40px);
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 45px rgba(10, 61, 107, 0.12);
+    overflow: hidden;
+    max-width: 1100px; /* Enhanced width for spacious form handling */
+    margin: 40px auto;
+}
+
+/* Left Informational Sidebar */
+.complaint-info-side {
+    flex: 1;
+    background: linear-gradient(135deg, #0d345a, var(--india-blue));
+    color: #ffffff;
+    padding: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.brand-deco-lines {
+    position: absolute;
+    top: 0; left: 0; width: 6px; height: 100%;
+    display: flex; flex-direction: column;
+}
+.brand-deco-lines span { flex: 1; width: 100%; }
+
+.info-meta h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+}
+.info-meta p {
+    font-family: 'Hind', sans-serif;
+    font-size: 14.5px;
+    opacity: 0.85;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.info-cards {
+    margin-top: 32px;
+}
+.ref-note-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    border-left: 3px solid var(--saffron);
+}
+.ref-note-card i {
+    color: var(--saffron);
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+/* Right Form Panel */
+.complaint-form-side {
+    flex: 1.6;
+    padding: 44px;
+}
+
+.form-section { margin-bottom: 24px; }
+.form-section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--text-muted); font-weight: 700;
+    margin-bottom: 16px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+.lb-form-label {
+    display: block; font-size: 13px; font-weight: 600;
+    color: var(--text-dark); margin-bottom: 6px;
+}
+
+/* Unified Inputs matching Auth Style */
+.lb-select {
+    border: 1.5px solid var(--border); border-radius: 9px;
+    padding: 11px 14px; font-size: 14px;
+    font-family: 'Hind', sans-serif; width: 100%;
+    background: #fff; cursor: pointer;
+    transition: border-color .2s, box-shadow .2s; outline: none;
+}
+.lb-select:focus { border-color: var(--india-blue-md); box-shadow: 0 0 0 3px rgba(21,101,168,.12); }
+
+.lb-input-icon { position: relative; }
+.lb-input-icon .icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; pointer-events: none; }
+.lb-input-icon input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 9px;
+    padding: 11px 14px 11px 40px; font-size: 14px; font-family: 'Hind', sans-serif;
+    transition: border-color .2s, box-shadow .2s; outline: none;
+}
+.lb-input-icon input:focus { border-color: var(--india-blue-md); box-shadow: 0 0 0 3px rgba(21,101,168,.12); }
+
+.lb-textarea {
+    border: 1.5px solid var(--border); border-radius: 9px;
+    padding: 12px 14px; font-size: 14px;
+    font-family: 'Hind', sans-serif; width: 100%; resize: vertical; min-height: 120px;
+    transition: border-color .2s, box-shadow .2s; outline: none;
+}
+.lb-textarea:focus { border-color: var(--india-blue-md); box-shadow: 0 0 0 3px rgba(21,101,168,.12); }
+
+/* File Drop Component */
+.file-drop {
+    display: block;
+    border: 2px dashed var(--border); border-radius: 9px;
+    padding: 24px; text-align: center; cursor: pointer;
+    background: var(--off-white);
+    transition: border-color .2s, background .2s;
+}
+.file-drop:hover { border-color: var(--india-blue-md); background: rgba(21,101,168,.04); }
+.file-drop input[type=file] { display: none; }
+.file-drop .fd-icon { font-size: 1.8rem; color: var(--text-muted); margin-bottom: 6px; }
+.file-drop .fd-text { font-size: 13.5px; color: var(--text-dark); }
+.file-drop .fd-text strong { color: var(--india-blue); }
+
+.btn-submit-complaint {
+    width: 100%; padding: 13px;
+    background: var(--saffron); color: #fff;
+    border: none; border-radius: 9px;
+    font-size: 15px; font-weight: 700; font-family: 'Baloo 2', sans-serif;
+    cursor: pointer; transition: background .2s, transform .1s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 8px;
+}
+.btn-submit-complaint:hover { background: #e05a00; transform: translateY(-1px); }
+
+/* Responsive Breakpoints */
+@media (max-width: 992px) {
+    .split-complaint-container {
+        flex-direction: column;
+        margin: 20px 15px;
+    }
+    .complaint-info-side {
+        padding: 32px;
+    }
+    .brand-deco-lines {
+        width: 100%; height: 6px; flex-direction: row;
+    }
+    .complaint-form-side {
+        padding: 32px 24px;
+    }
+}
+</style>
+
+<div class="split-complaint-container">
+    <!-- Left Panel: Context & Instructions -->
+    <div class="complaint-info-side">
+        <!-- Vertical Tricolor Strip on left edge -->
+        <div class="brand-deco-lines">
+            <span style="background:var(--saffron)"></span>
+            <span style="background:#fff"></span>
+            <span style="background:var(--india-green)"></span>
+        </div>
+        
+        <div class="info-meta">
+            <h2>{{ t.nav_submit }}</h2>
+            <p>{{ t.email_complaint_body }}</p>
+        </div>
+
+        <div class="info-cards">
+            <div class="ref-note-card">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    A unique <strong>Complaint Reference ID</strong> will be generated after submission for easy real-time dashboard tracking.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Panel: The Interactive Complaint Form -->
+    <div class="complaint-form-side">
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('citizen.submit_complaint') }}" novalidate>
+
+            <!-- Classification Section -->
+            <div class="form-section">
+                <div class="form-section-title">{{ t.email_action }}</div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="lb-form-label">{{ t.email_category }} <span style="color:red;">*</span></label>
+                        <select class="lb-select" name="category" required>
+                            <option value="" disabled selected>{{ t.fill_all_fields }}</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat }}">{{ cat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="lb-form-label">{{ t.email_description }} <span style="color:red;">*</span></label>
+                        <div class="lb-input-icon">
+                            <i class="fas fa-map-marker-alt icon"></i>
+                            <input type="text" name="location" placeholder="City, Ward, Landmark…" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statement Section -->
+            <div class="form-section">
+                <div class="form-section-title">Description</div>
+                <label class="lb-form-label">Detailed Description <span style="color:red;">*</span></label>
+                <textarea class="lb-textarea" name="description" required
+                    placeholder="Describe the issue clearly — include the date observed, exact location, and impact on the community. Recommended: up to 500 characters."></textarea>
+                <div style="font-size:12px;color:var(--text-muted);margin-top:5px;line-height:1.4;">
+                    Be descriptive to help assign officials resolve the issue faster.
+                </div>
+            </div>
+
+            <!-- Attachments Section -->
+            <div class="form-section">
+                <div class="form-section-title">Supporting Evidence (Optional)</div>
+                <label class="file-drop" for="attachment">
+                    <div class="fd-icon">📎</div>
+                    <div class="fd-text"><strong>Click to upload</strong> or drag & drop a file here</div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-top:5px;">PNG, JPG, JPEG, PDF · Max 5 MB</div>
+                    <input type="file" id="attachment" name="attachment" accept=".png,.jpg,.jpeg,.pdf">
+                </label>
+                <div id="file-name-display" style="font-size:12.5px;color:var(--india-blue);margin-top:8px;font-weight:600;"></div>
+            </div>
+
+            <!-- Submit Engine -->
+            <button type="submit" class="btn-submit-complaint">
+                <i class="fas fa-paper-plane"></i> {{ t.nav_submit }}
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('attachment').addEventListener('change', function(){
+    const display = document.getElementById('file-name-display');
+    if(this.files.length > 0){
+        display.innerHTML = '<i class="fas fa-check-circle" style="color:var(--india-green-md)"></i> Selected: ' + this.files[0].name;
+    } else {
+        display.innerHTML = '';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+<nav class="main-nav navbar navbar-expand-lg mb-0" style="background: linear-gradient(90deg, #0A3D6B, #0D5299);">
+    <div class="container-fluid">
+        <a class="navbar-brand d-lg-none" href="{{ url_for('admin.admin_dashboard') }}"
+           style="color:#fff; font-family:'Baloo 2',sans-serif; font-weight:800; font-size:1.1rem;">
+            🛡️ Admin Portal
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="adminNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.admin_dashboard' %}active{% endif %}"
+                       href="{{ url_for('admin.admin_dashboard') }}">
+                        <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.manage_complaints' %}active{% endif %}"
+                       href="{{ url_for('admin.manage_complaints') }}">
+                        <i class="fas fa-clipboard-list me-1"></i> Manage Grievances
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.manage_services' %}active{% endif %}"
+                       href="{{ url_for('admin.manage_services') }}">
+                        <i class="fas fa-cogs me-1"></i> Services
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'admin.manage_users' %}active{% endif %}"
+                       href="{{ url_for('admin.manage_users') }}">
+                        <i class="fas fa-users me-1"></i> Users
+                    </a>
+                </li>
+            </ul>
+            <div class="navbar-text" style="color:rgba(255,255,255,.7); font-size:12.5px;">
+                <i class="fas fa-shield-alt" style="color:var(--saffron);"></i>
+                Admin Control Panel
+            </div>
+        </div>
+    </div>
+</nav>
